@@ -1,4 +1,4 @@
-#define SYSTEM_MAIN_H
+//#define SYSTEM_MAIN_H
 
 #include "system_main.h"
 
@@ -7,25 +7,26 @@ uint16_t count = 0;
 
 void SysTick_Handler(void)
 {
-  asm("CPSID I");
-  count++;
+	asm("CPSID I");
+	count++;
 
-  if(count==100)
-  {
-	  cane++;
-	count = 0;
-	if(in_esecuzione != -1)
-		SALVA_STATO
-	in_esecuzione = scheduler();
-	CARICA_STATO
+	if(count==100)
+	{
+		cane++;
+		count = 0;
+		if(running == 0) {
+			SALVA_STATO
+		}
+		running = SCHEDULER();
+		CARICA_STATO
 
 
-	asm("MOV LR, 0xFFFFFFF9");
+		asm("MOV LR, 0xFFFFFFF9");
+		asm("CPSIE I");
+		asm("bx lr");
+	}
+
 	asm("CPSIE I");
-	asm("bx lr");
-  }
-
-  asm("CPSIE I");
 
 }
 
@@ -40,7 +41,7 @@ void init_timer(){
 	/* Enable GPIOA clock */
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 	/* Enable SYSCFG clock */
-	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 
 	/* Configure PA0 pin as input floating */
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;

@@ -2,35 +2,28 @@
 
 #include "system_main.h"
 
-
 uint8_t num_active_task = 0;
-
-
-
 
 inline uint8_t find_free_desc_task()
 {
 	uint8_t i;
-	for(i = 0; i<MAX_NUM_TASK; i++) {
+	for (i = 0; i < MAX_NUM_TASK; i++) {
 		if(des_task[i].active == FALSE)
 			return i;
 	}
-	return 255;
+	return -1;
 }
 
 inline void terminate_task()
 {
-	in_esecuzione->active = FALSE;
-	free(in_esecuzione->top_stack);
+	running->active = FALSE;
+	free(running->top_stack);
 
 	asm("LDR PC, =dummy");
-
 }
 
-
-inline void activate_task(ADDR addr_fun, uint8_t priority, uint32_t param){
-
-
+void activate_task(THREAD addr_fun, uint8_t priority, uint32_t param)
+{
 	ADDR sp_new_task;
 	uint8_t free_desc_task;
 
@@ -59,19 +52,14 @@ inline void activate_task(ADDR addr_fun, uint8_t priority, uint32_t param){
 	*(sp_new_task + 6) = (REG) des_task[free_desc_task].context.PC;
 	*(sp_new_task + 7) = (REG) des_task[free_desc_task].context.XPSR;
 
-
 	num_active_task++;
-
-
 }
 
-
-
-
-inline des_task_block* scheduler(){
-	static uint8_t i = 0;
-	i = (++i)%num_active_task;
-	return (&des_task[i]);
+inline des_task_block * RR_scheduler()
+{
+	static int proc_id = 0;
+	proc_id = (proc_id + 1) % num_active_task;
+	return (&des_task[proc_id]);
 }
 
 inline void init_desc_task()
@@ -82,30 +70,28 @@ inline void init_desc_task()
 }
 
 
-void dummy()
+void dummy(int b)
 {
 	for(;;);
 }
 
-int main(){
-
-	init_leds();
-
+void sys_init()
+{
+	led_init();
 	init_desc_task();
+}
 
+int main()
+{
+	sys_init();
+
+	activate_task(&dummy, 0, 10);
 
 	user_main();
 
 	init_timer();
 
-	in_esecuzione = -1;
+	running = 0;
 
-
-	//CARICA_STATO
-	//asm("bx lr");
-
-
-dummy();
-
-
+	for(;;);
 }
