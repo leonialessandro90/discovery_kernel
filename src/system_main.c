@@ -22,7 +22,7 @@ inline void terminate_task()
 	asm("LDR PC, =dummy");
 }
 
-void activate_task(THREAD addr_fun, uint8_t priority, uint32_t param)
+void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
 {
 	ADDR sp_new_task;
 	uint8_t free_desc_task;

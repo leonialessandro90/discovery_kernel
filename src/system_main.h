@@ -39,17 +39,17 @@
 		asm("LDR R11, [R0, #44]");\
 		asm("LDR R12, [R0, #48]");\
 		asm("LDR SP, [R0, #52]");\
-		//asm("LDR LR, [R0, #60]");
+	//	asm("LDR LR, [R0, #60]"); //ATTENTI ATTENTI ATTENTI AL LUPO AL LUPO
 
 #define ADDR uint32_t*
-#define THREAD void*
+#define TASK void*
 #define REG uint32_t
 #define MEMORY_BASE 0x2001fff0
 #define EBP_BASE 0x0
 #define DIM_SINGLE_STACK 5000
 #define MAX_NUM_TASK 10
 #define TASK_ID uint8_t
-//#define TASK void
+#define TASK void
 #define BOOL uint8_t
 #define TRUE 1
 #define FALSE 0
@@ -86,8 +86,10 @@ typedef struct des_task_type_t{
 	uint8_t priority;
 	ADDR top_stack;
 	context_type context;
-	ADDR next_task;
+	TASK* next_task;
 } des_task_block;
+
+
 
 int cane;
 //des_task_type* des_task;
@@ -102,7 +104,7 @@ void carica_stato();
 des_task_block* scheduler();
 void start_task(ADDR addr_fun, uint32_t param);
 void init_timer();
-void activate_task(THREAD addr_fun, uint8_t priority, uint32_t param);
+void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param);
 inline des_task_block * SCHEDULER ();
 
 

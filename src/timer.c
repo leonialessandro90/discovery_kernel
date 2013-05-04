@@ -1,4 +1,3 @@
-//#define SYSTEM_MAIN_H
 
 #include "system_main.h"
 

@@ -10,11 +10,6 @@
 
 #include <system_main.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "stm32f4xx.h"
-#include "stm32f4_discovery.h"
 
 /*
  * Turns on the specified leds.
