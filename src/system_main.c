@@ -58,7 +58,7 @@ void activate_task(THREAD addr_fun, uint8_t priority, uint32_t param)
 inline des_task_block * RR_scheduler()
 {
 	static int proc_id = 0;
-	proc_id = (proc_id + 1) % num_active_task;
+	proc_id = (++proc_id) % num_active_task;
 	return (&des_task[proc_id]);
 }
 
@@ -85,7 +85,7 @@ int main()
 {
 	sys_init();
 
-	activate_task(&dummy, 0, 10);
+	//activate_task(&dummy, 0, 10);
 
 	user_main();
 
@@ -93,5 +93,6 @@ int main()
 
 	running = 0;
 
+	dummy(0);
 	for(;;);
 }

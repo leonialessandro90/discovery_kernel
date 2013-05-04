@@ -43,7 +43,7 @@ void led_off(uint8_t num)
 	tmp_lck = 0x00010000;
 
 	for (i = 0; i < 4; i++) {
-		modr_reg += (num << (24 + i)) & (0x00000001 << (24 + 2*i));
+		modr_reg -= (num << (24 + i)) & (0x00000001 << (24 + 2*i));
 	}
 	odr_reg = (uint16_t)num << 12;
 	tmp_lck |= odr_reg;

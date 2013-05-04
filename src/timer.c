@@ -14,7 +14,7 @@ void SysTick_Handler(void)
 	{
 		cane++;
 		count = 0;
-		if(running == 0) {
+		if(running != 0) {
 			SALVA_STATO
 		}
 		running = SCHEDULER();

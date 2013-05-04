@@ -21,12 +21,19 @@ int fun2(int par)
 
 void task2(int b)
 {
-	for (;;) light_leds(2);
+	//for (;;) light_leds(2);
 }
 
 void task3(int b)
 {
-	for (;;) led_on(LED0 + LED3);
+	static int i;
+	static int count = 1000000;
+	for (;;) {
+		led_on(LED0 + LED3);
+		for (i=0; i<count; i++);
+		led_off(LED0 + LED3);
+		for (i=0; i<count; i++);
+	}
 }
 
 
