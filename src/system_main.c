@@ -11,8 +11,7 @@ uint8_t num_active_task = 0;
 inline uint8_t find_free_desc_task()
 {
 	uint8_t i;
-	for(i = 0; i<MAX_NUM_TASK; i++)
-	{
+	for(i = 0; i<MAX_NUM_TASK; i++) {
 		if(des_task[i].active == FALSE)
 			return i;
 	}
