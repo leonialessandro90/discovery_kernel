@@ -4,9 +4,17 @@ uint8_t num_active_task = 0;
 
 inline void terminate_task()
 {
-	free(running->top_stack);
+	asm("CPSID I");
 
-	asm("LDR PC, =dummy");
+	num_active_task--;
+	free(running->top_stack);
+	free(running);
+	running = null;
+	running = SCHEDULER();
+	CARICA_STATO
+	asm("CPSIE I");
+	asm("bx lr");
+
 }
 
 void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
@@ -42,20 +50,24 @@ void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
 	num_active_task++;
 }
 
-//inline des_task_block * RR_scheduler_array_DEPRECATED()
-//{
-//	static int proc_id = 0;
-//	proc_id = (++proc_id) % num_active_task;
-//	return (&des_task[proc_id]);
-//}
 
 inline des_task_block * RR_scheduler()
 {
-	des_task_block * next = (des_task_block *)list_remove(&ready);
-	if(running!=0)
+	register des_task_block * next;
+	if(running!=null)
 		list_insert(&ready, (void *)running);
+
+
+	next = (des_task_block *)list_remove(&ready);
+
+
+	if(num_active_task > 1 && next->id == 0) {
+		list_insert(&ready, next);
+		next = (des_task_block *)list_remove(&ready);
+	}
 	return next;
 }
+
 
 void sys_init()
 {

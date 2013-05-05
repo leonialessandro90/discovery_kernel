@@ -2,9 +2,10 @@
 
 void list_insert(list ** lst, void * elem)
 {
-	list * new_block = malloc(sizeof(list));
+	list * new_block;
 	list * iterator = *lst;
 
+	new_block = malloc(sizeof(list));
 	new_block->elem = elem;
 	new_block->next = null;
 	if (*lst == null) {

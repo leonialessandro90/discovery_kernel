@@ -7,7 +7,7 @@
 #define REG uint32_t
 #define MEMORY_BASE 0x2001fff0
 #define EBP_BASE 0x0
-#define DIM_SINGLE_STACK 5000
+#define DIM_SINGLE_STACK 200
 #define MAX_NUM_TASK 10
 #define TASK_ID uint8_t
 #define TASK void

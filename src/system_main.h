@@ -43,7 +43,7 @@
 		asm("LDR R11, [R0, #44]");\
 		asm("LDR R12, [R0, #48]");\
 		asm("LDR SP, [R0, #52]");\
-	//	asm("LDR LR, [R0, #60]"); //ATTENTI ATTENTI ATTENTI AL LUPO AL LUPO
+		asm("LDR LR, [R0, #60]"); //ATTENTI ATTENTI ATTENTI AL LUPO AL LUPO
 
 typedef struct context_type_t{
 	uint32_t R0;
