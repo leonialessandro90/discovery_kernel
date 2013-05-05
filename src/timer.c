@@ -6,19 +6,17 @@ uint16_t count = 0;
 
 void SysTick_Handler(void)
 {
+	des_task_block * appo;
 	asm("CPSID I");
 	count++;
 
-	if(count==100)
-	{
-		cane++;
+	if (count==100) {
 		count = 0;
-		if(running != 0) {
-			SALVA_STATO
-		}
-		running = SCHEDULER();
+		SALVA_STATO
+		appo = SCHEDULER();
+		if (appo != null)
+			running = appo;
 		CARICA_STATO
-
 
 		asm("MOV LR, 0xFFFFFFF9");
 		asm("CPSIE I");

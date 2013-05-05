@@ -1,22 +1,9 @@
-#define SYSTEM_MAIN_H
-
 #include "system_main.h"
 
 uint8_t num_active_task = 0;
 
-inline uint8_t find_free_desc_task()
-{
-	uint8_t i;
-	for (i = 0; i < MAX_NUM_TASK; i++) {
-		if(des_task[i].active == FALSE)
-			return i;
-	}
-	return -1;
-}
-
 inline void terminate_task()
 {
-	running->active = FALSE;
 	free(running->top_stack);
 
 	asm("LDR PC, =dummy");
@@ -24,75 +11,79 @@ inline void terminate_task()
 
 void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
 {
-	ADDR sp_new_task;
-	uint8_t free_desc_task;
+	static uint8_t id = 0;
+	ADDR * sp_new_task;
+	des_task_block * des_task = (des_task_block *) malloc(sizeof(des_task_block));
 
-	free_desc_task = find_free_desc_task();
+	list_insert(&ready, (void *)des_task);
 
-	//ebp_new_task = MEMORY_BASE + EBP_BASE + ((num_active_task+1) * DIM_SINGLE_STACK);
-	des_task[free_desc_task].top_stack = malloc(DIM_SINGLE_STACK);
+	des_task->top_stack = malloc(DIM_SINGLE_STACK);
 
-	sp_new_task = des_task[free_desc_task].top_stack + DIM_SINGLE_STACK / 2; //DA TESTARE!!!
+	sp_new_task = des_task->top_stack + DIM_SINGLE_STACK / 2; //DA TESTARE!!!
 
-	des_task[free_desc_task].context.R0 = param;
-	des_task[free_desc_task].context.SP = sp_new_task;
-	des_task[free_desc_task].context.XPSR = 0x1000000;
-	des_task[free_desc_task].context.LR = &terminate_task;
-	des_task[free_desc_task].context.PC = addr_fun;
+	des_task->id = id++;
+	des_task->context.R0 = param;
+	des_task->context.SP = (REG) sp_new_task;
+	des_task->context.XPSR = 0x1000000;
+	des_task->context.LR = (uint32_t)&terminate_task;
+	des_task->context.PC = addr_fun;
 
-	des_task[free_desc_task].active = TRUE;
-	des_task[free_desc_task].priority = priority;
+	des_task->priority = priority;
 
-	*(sp_new_task) = (REG) des_task[free_desc_task].context.R0;
-	*(sp_new_task + 1) = (REG) des_task[free_desc_task].context.R1;
-	*(sp_new_task + 2) = (REG) des_task[free_desc_task].context.R2;
-	*(sp_new_task + 3) = (REG) des_task[free_desc_task].context.R3;
-	*(sp_new_task + 4) = (REG) des_task[free_desc_task].context.R12;
-	*(sp_new_task + 5) = (REG) des_task[free_desc_task].context.LR;
-	*(sp_new_task + 6) = (REG) des_task[free_desc_task].context.PC;
-	*(sp_new_task + 7) = (REG) des_task[free_desc_task].context.XPSR;
+	*(sp_new_task) = (REG) des_task->context.R0;
+	*(sp_new_task + 1) = (REG) des_task->context.R1;
+	*(sp_new_task + 2) = (REG) des_task->context.R2;
+	*(sp_new_task + 3) = (REG) des_task->context.R3;
+	*(sp_new_task + 4) = (REG) des_task->context.R12;
+	*(sp_new_task + 5) = (REG) des_task->context.LR;
+	*(sp_new_task + 6) = (REG) des_task->context.PC;
+	*(sp_new_task + 7) = (REG) des_task->context.XPSR;
 
 	num_active_task++;
 }
 
+//inline des_task_block * RR_scheduler_array_DEPRECATED()
+//{
+//	static int proc_id = 0;
+//	proc_id = (++proc_id) % num_active_task;
+//	return (&des_task[proc_id]);
+//}
+
 inline des_task_block * RR_scheduler()
 {
-	static int proc_id = 0;
-	proc_id = (++proc_id) % num_active_task;
-	return (&des_task[proc_id]);
+	des_task_block * next = (des_task_block *)list_remove(&ready);
+	list_insert(&ready, (void *)running);
+	return next;
 }
 
-inline void init_desc_task()
+void sys_init()
 {
-	uint8_t i;
-	for(i=0; i<MAX_NUM_TASK; i++)
-		des_task[i].active = FALSE;
+	led_init();
 }
-
 
 void dummy(int b)
 {
 	for(;;);
 }
 
-void sys_init()
+void activate_dummy()
 {
-	led_init();
-	init_desc_task();
+	CARICA_STATO
+	asm("bx lr");
 }
 
 int main()
 {
 	sys_init();
 
-	//activate_task(&dummy, 0, 10);
+	activate_task(&dummy, 0, 0);
+	running = SCHEDULER();
 
 	user_main();
 
 	init_timer();
 
-	running = 0;
+	activate_dummy();
 
-	dummy(0);
 	for(;;);
 }

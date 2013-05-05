@@ -61,12 +61,11 @@ TASK task1(int b)
 	}
 }
 
-
 void user_main()
 {
 	sem_init(&sem_led, 0);
-	activate_task(&task1, 1, 4);
-	activate_task(&task2, 1, 10);
-	//activate_task(&task3, 2, 15);
+	//activate_task(&task1, 1, 2);
+	//activate_task(&task2, 2, 3);
+	//activate_task(&task3, 3, 4);
 }
 

@@ -5,10 +5,14 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <malloc.h>
+
+#include "types.h"
 
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
 #include "leds.h"
+#include "list.h"
 
 #define SALVA_STATO asm("POP {R7}");\
 		asm("POP {LR}");\
@@ -41,25 +45,6 @@
 		asm("LDR SP, [R0, #52]");\
 	//	asm("LDR LR, [R0, #60]"); //ATTENTI ATTENTI ATTENTI AL LUPO AL LUPO
 
-#define ADDR uint32_t*
-#define TASK void*
-#define REG uint32_t
-#define MEMORY_BASE 0x2001fff0
-#define EBP_BASE 0x0
-#define DIM_SINGLE_STACK 5000
-#define MAX_NUM_TASK 10
-#define TASK_ID uint8_t
-#define TASK void
-#define BOOL uint8_t
-#define TRUE 1
-#define FALSE 0
-
-#define BP R7
-#define SP R13
-#define PC R15
-#define LR R14
-#define XPSR R16
-
 typedef struct context_type_t{
 	uint32_t R0;
 	uint32_t R1;
@@ -82,21 +67,16 @@ typedef struct context_type_t{
 
 typedef struct des_task_type_t{
 	uint8_t id;
-	BOOL active;
 	uint8_t priority;
 	ADDR top_stack;
 	context_type context;
 	TASK* next_task;
 } des_task_block;
 
-
-
-int cane;
-//des_task_type* des_task;
-des_task_block des_task[MAX_NUM_TASK];
 ADDR global_addr_carica_stato;
-TASK_ID current_task;
 des_task_block* running;
+des_task_block* dummy_des;
+list * ready;
 
 void user_main();
 void salva_stato();
@@ -106,6 +86,5 @@ void start_task(ADDR addr_fun, uint32_t param);
 void init_timer();
 void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param);
 inline des_task_block * SCHEDULER ();
-
 
 #endif /* SYSTEM_MAIN_H_ */
