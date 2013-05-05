@@ -52,7 +52,8 @@ void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
 inline des_task_block * RR_scheduler()
 {
 	des_task_block * next = (des_task_block *)list_remove(&ready);
-	list_insert(&ready, (void *)running);
+	if(running!=0)
+		list_insert(&ready, (void *)running);
 	return next;
 }
 
@@ -76,7 +77,7 @@ int main()
 {
 	sys_init();
 
-	activate_task(&dummy, 0, 0);
+	activate_task(&dummy, 10, 50);
 	running = SCHEDULER();
 
 	user_main();
