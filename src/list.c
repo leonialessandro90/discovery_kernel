@@ -2,16 +2,17 @@
 
 void list_insert(list ** lst, void * elem)
 {
-	if (*lst == 0) {
-		*lst = malloc(sizeof(list));
-		(*lst)->elem = elem;
-		(*lst)->next = null;
+	list * new_block = malloc(sizeof(list));
+	list * iterator = *lst;
+
+	new_block->elem = elem;
+	new_block->next = null;
+	if (*lst == null) {
+		*lst = new_block;
 	} else {
-		while ((*lst)->next != 0)
-			*lst = (*lst)->next;
-		(*lst)->next = malloc(sizeof(list));
-		(*lst)->next->elem = elem;
-		(*lst)->next->next = null;
+		while (iterator->next != null)
+			iterator = iterator->next;
+		iterator->next = new_block;
 	}
 }
 
