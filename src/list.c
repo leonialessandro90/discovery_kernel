@@ -50,3 +50,20 @@ void * list_remove(list ** lst)
 	free(head);
 	return ret;
 }
+
+void list_delete_tail(list ** lst)
+{
+	list * tail = *lst;
+	list * before_tail = *lst;
+
+	if (*lst == null)
+		return;
+
+	while (tail->next != null) {
+		before_tail = tail;
+		tail = tail->next;
+	}
+
+	before_tail->next = null;
+	free(tail);
+}

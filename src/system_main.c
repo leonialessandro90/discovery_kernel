@@ -8,8 +8,8 @@ inline void terminate_task()
 
 	num_active_task--;
 	free(running->top_stack);
-	free(running);
-	running = null;
+	//free(running);
+	list_delete_tail(&ready);
 	running = SCHEDULER();
 	CARICA_STATO
 	asm("CPSIE I");
