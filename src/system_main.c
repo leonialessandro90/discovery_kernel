@@ -54,16 +54,13 @@ void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
 inline des_task_block * RR_scheduler()
 {
 	register des_task_block * next;
-	if(running!=null)
-		list_insert(&ready, (void *)running);
+	//if(running == null)
+	//	list_insert(&ready, (void *)running);
 
-
-	next = (des_task_block *)list_remove(&ready);
-
+	next = (des_task_block *)list_round_shift(&ready);
 
 	if(num_active_task > 1 && next->id == 0) {
-		list_insert(&ready, next);
-		next = (des_task_block *)list_remove(&ready);
+		next = (des_task_block *)list_round_shift(&ready);
 	}
 	return next;
 }
@@ -90,6 +87,7 @@ int main()
 	sys_init();
 
 	activate_task(&dummy, 10, 50);
+
 	running = SCHEDULER();
 
 	user_main();

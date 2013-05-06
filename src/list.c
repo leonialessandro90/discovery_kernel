@@ -1,5 +1,24 @@
 #include "list.h"
 
+void * list_round_shift(list ** lst)
+{
+	list * last = *lst;
+	list * head = *lst;
+
+	if (*lst == null)
+		return null;
+
+	while (iterator->next != null)
+		iterator = iterator->next;
+
+	iterator->next = *lst;
+	iterator->next->next = null;
+
+	if ((*lst)->next != null)
+		*lst = (*lst)->next;
+	return head->elem;
+}
+
 void list_insert(list ** lst, void * elem)
 {
 	list * new_block;
