@@ -2,20 +2,23 @@
 
 void * list_round_shift(list ** lst)
 {
-	list * last = *lst;
 	list * head = *lst;
+	list * tail;
 
 	if (*lst == null)
 		return null;
 
-	while (iterator->next != null)
-		iterator = iterator->next;
-
-	iterator->next = *lst;
-	iterator->next->next = null;
-
-	if ((*lst)->next != null)
+	if ((*lst)->next != 0) {
 		*lst = (*lst)->next;
+		tail = *lst;
+
+		while (tail->next != null)
+			tail = tail->next;
+
+		tail->next = head;
+		head->next = null;
+	}
+
 	return head->elem;
 }
 
