@@ -3,7 +3,6 @@
 void * list_round_shift(list ** lst)
 {
 	list * iterator = *lst;
-	list * tail;
 
 	if (*lst == null)
 		return null;
@@ -20,21 +19,25 @@ void * list_round_shift(list ** lst)
 	return (*lst)->elem;
 }
 
-void list_delete_tail(list ** lst)
+void * list_remove_tail(list ** lst)
 {
 	list * iterator = *lst;
 
 	if(*lst == null)
-		return;
+		return null;
 
-	if((*lst)->next == null )
+
+	if((*lst)->next == null) {
 		free(*lst);
+		*lst = null;
+		return null;
+	}
 
 	while(iterator->next->next != null)
 		iterator = iterator->next;
 	free(iterator->next);
 	iterator->next = null;
-
+	return iterator;
 }
 
 void list_insert(list ** lst, void * elem)
@@ -56,12 +59,9 @@ void list_insert(list ** lst, void * elem)
 
 void * list_remove(list ** lst)
 {
-	void * ret;
-	list * head = (*lst);
-	if (*lst == null)
+	list * head = *lst;
+	if (head == null)
 		return null;
-	ret = (*lst)->elem;
-	(*lst) = (*lst)->next;
-	free(head);
-	return ret;
+	*lst = (*lst)->next;
+	return head;
 }

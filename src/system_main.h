@@ -15,10 +15,12 @@
 #include "list.h"
 
 
-#define INT_TO_FUN asm("ADD SP, SP, #32");\
+#define INT_TO_FUN\
+		asm("ADD SP, SP, #32");\
 		asm("LDR R0, [R0, #60]");
 
-#define SALVA_STATO asm("POP {R7}");\
+#define SALVA_STATO\
+		asm("POP {R7}");\
 		asm("POP {LR}");\
 		asm("LDR R1, =running");\
 		asm("LDR R1, [R1, 0]");\
@@ -37,10 +39,11 @@
 		asm("LDR R0, [SP, 24]");\
 		asm("STR R0, [R1, 60]");\
 		asm("LDR R0, [SP, 28]");\
-		asm("STR R0, [R1, 64]");\
+		asm("STR R0, [R1, 64]");
 		//asm("STR LR, [R1, #60]");
 
-#define CARICA_STATO	asm("LDR R0, =running");\
+#define CARICA_STATO\
+		asm("LDR R0, =running");\
 		asm("LDR R0, [R0,0]");\
 		asm("ADD R0, R0, #8");\
 		asm("LDR R4, [R0, #16]");\
@@ -53,9 +56,9 @@
 		asm("LDR R11, [R0, #44]");\
 		asm("LDR R12, [R0, #48]");\
 		asm("LDR SP, [R0, #52]");\
-		asm("LDR LR, [R0, #56]");\
+		asm("LDR LR, [R0, #56]");
 
-typedef struct context_type_t{
+typedef struct context_type_t {
 	uint32_t R0;
 	uint32_t R1;
 	uint32_t R2;
@@ -83,10 +86,8 @@ typedef struct des_task_type_t{
 	TASK * next_task;
 } des_task_block;
 
-ADDR global_addr_carica_stato;
-des_task_block* running;
-des_task_block* dummy_des;
-list * ready;
+des_task_block * running; // currently running task
+list * ready;		// head of ready processes queue
 
 void user_main();
 void start_task(ADDR addr_fun, uint32_t param);

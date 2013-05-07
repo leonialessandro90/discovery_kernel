@@ -4,16 +4,13 @@ uint8_t num_active_task = 0;
 
 inline void terminate_task()
 {
+	register list * zombie;
 	asm("CPSID I");
-
 	num_active_task--;
-	free(running->top_stack);
-	//free(running);
-	ready = ready->next;
-	running = ready->elem;
+	zombie = list_remove(&ready);
+	free(((des_task_block *)(zombie->elem))->top_stack);
+	free(zombie);
 	running = SCHEDULER();
-	//c'è da fare la free, state calmi
-//	list_delete_tail(&ready);
 	CARICA_STATO
 	INT_TO_FUN
 	asm("CPSIE I");
@@ -23,7 +20,6 @@ inline void terminate_task()
 	asm("POP {R1}");
 	asm("PUSH {LR}");
 	asm("PUSH {R7}");*/
-
 }
 
 void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
