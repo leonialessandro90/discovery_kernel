@@ -7113,7 +7113,7 @@ typedef struct
   */ 
 
 #ifdef USE_STDPERIPH_DRIVER
-  #include "stm32f4xx_conf.h"
+  #include "sys/stm32f4xx/stm32f4xx_conf.h"
 #endif /* USE_STDPERIPH_DRIVER */
 
 /** @addtogroup Exported_macro
