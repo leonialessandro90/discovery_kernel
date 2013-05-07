@@ -26,26 +26,26 @@ inline void terminate_task()
 
 }
 
-void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
+void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 {
-	static uint8_t id = 0;
-	ADDR * sp_new_task;
-	des_task_block * des_task = (des_task_block *) malloc(sizeof(des_task_block));
+	static uint8_t id = 0;		// task identifier
+	ADDR * sp_new_task;			// stack pointer of the new task
+	des_task_block * des_task;	// new task's descriptor
 
-	list_insert(&ready, (void *)des_task);
+	des_task = (des_task_block *) malloc(sizeof(des_task_block));
 
-	des_task->top_stack = malloc(DIM_SINGLE_STACK);
+	des_task->top_stack = (ADDR) malloc(DIM_SINGLE_STACK);
 
-	sp_new_task = des_task->top_stack + DIM_SINGLE_STACK / 2; //DA TESTARE!!!
+	sp_new_task = (ADDR *) (des_task->top_stack + DIM_SINGLE_STACK / 2); //DA TESTARE!!!
 
 	des_task->id = id++;
+	des_task->priority = priority;
+
 	des_task->context.R0 = param;
 	des_task->context.SP = (REG) sp_new_task;
 	des_task->context.XPSR = 0x1000000;
-	des_task->context.LR = (uint32_t)&terminate_task;
-	des_task->context.PC = addr_fun;
-
-	des_task->priority = priority;
+	des_task->context.LR = (uint32_t) &terminate_task;
+	des_task->context.PC = (uint32_t) addr_fun;
 
 	*(sp_new_task) = (REG) des_task->context.R0;
 	*(sp_new_task + 1) = (REG) des_task->context.R1;
@@ -57,6 +57,8 @@ void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
 	*(sp_new_task + 7) = (REG) des_task->context.XPSR;
 
 	num_active_task++;
+
+	list_insert(&ready, (void *)des_task);
 }
 
 inline des_task_block * RR_scheduler()
