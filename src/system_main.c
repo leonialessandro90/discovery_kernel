@@ -80,10 +80,7 @@ void sys_init()
 	led_init();
 }
 
-void dummy(int b)
-{
-	for(;;)led_on(0);
-}
+TASK dummy(int p) { for (;;) ; }
 
 void activate_dummy()
 {
