@@ -3,6 +3,7 @@
 
 #define null 0
 
+#define STACK void*
 #define ADDR uint32_t
 #define REG uint32_t
 #define MEMORY_BASE 0x2001fff0

@@ -78,9 +78,9 @@ typedef struct context_type_t{
 typedef struct des_task_type_t{
 	uint8_t id;
 	uint8_t priority;
-	ADDR top_stack;
+	STACK top_stack;
 	context_type context;
-	TASK* next_task;
+	TASK * next_task;
 } des_task_block;
 
 ADDR global_addr_carica_stato;
@@ -89,9 +89,6 @@ des_task_block* dummy_des;
 list * ready;
 
 void user_main();
-void salva_stato();
-void carica_stato();
-des_task_block* scheduler();
 void start_task(ADDR addr_fun, uint32_t param);
 void init_timer();
 void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param);
