@@ -59,28 +59,22 @@ void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param)
 	num_active_task++;
 }
 
-
 inline des_task_block * RR_scheduler()
 {
-	register des_task_block * next;
-	//if(running == null)
-	//	list_insert(&ready, (void *)running);
-
-	next = (des_task_block *)list_round_shift(&ready);
-
-	if(num_active_task > 1 && next->id == 0) {
+	register des_task_block * next = (des_task_block *)list_round_shift(&ready);
+	if (num_active_task > 1 && next->id == 0)
 		next = (des_task_block *)list_round_shift(&ready);
-	}
 	return next;
 }
 
+TASK dummy(int p) { for (;;) ; }
 
 void sys_init()
 {
+	activate_task(&dummy, 10, 50);
+	running = SCHEDULER();
 	led_init();
 }
-
-TASK dummy(int p) { for (;;) ; }
 
 void activate_dummy()
 {
@@ -89,22 +83,11 @@ void activate_dummy()
 	asm("bx r0");
 }
 
-
-
-
 int main()
 {
-
 	sys_init();
-
-	activate_task(&dummy, 10, 50);
-
-	running = SCHEDULER();
-
 	user_main();
-
 	init_timer();
-
 	activate_dummy();
 
 	for(;;);

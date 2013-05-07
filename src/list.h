@@ -11,5 +11,6 @@ typedef struct list_t {
 
 void list_insert(list ** lst, void * elem);
 void * list_remove(list ** lst);
+void * list_round_shift(list ** lst);
 
 #endif /* LIST_H_ */
