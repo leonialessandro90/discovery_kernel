@@ -83,6 +83,6 @@ void user_main()
 	activate_task(&task1, 1, 2);
 	activate_task(&task2, 2, 3);
 	activate_task(&task3, 3, 4);
-	activate_task(&task4, 4, 10);
+	//activate_task(&task4, 4, 10);
 }
 

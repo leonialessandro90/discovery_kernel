@@ -8,12 +8,21 @@ inline void terminate_task()
 
 	num_active_task--;
 	free(running->top_stack);
-	free(running);
-	running = null;
+	//free(running);
+	ready = ready->next;
+	running = ready->elem;
 	running = SCHEDULER();
+	//c'è da fare la free, state calmi
+//	list_delete_tail(&ready);
 	CARICA_STATO
+	INT_TO_FUN
 	asm("CPSIE I");
-	asm("bx lr");
+	asm("add r0, r0, #1");
+	asm("bx r0");
+	/*asm("POP {R7}");
+	asm("POP {R1}");
+	asm("PUSH {LR}");
+	asm("PUSH {R7}");*/
 
 }
 
@@ -73,17 +82,22 @@ void sys_init()
 
 void dummy(int b)
 {
-	for(;;);
+	for(;;)led_on(0);
 }
 
 void activate_dummy()
 {
 	CARICA_STATO
-	asm("bx lr");
+	INT_TO_FUN
+	asm("bx r0");
 }
+
+
+
 
 int main()
 {
+
 	sys_init();
 
 	activate_task(&dummy, 10, 50);

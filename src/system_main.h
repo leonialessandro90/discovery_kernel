@@ -14,6 +14,10 @@
 #include "leds.h"
 #include "list.h"
 
+
+#define INT_TO_FUN asm("ADD SP, SP, #32");\
+		asm("LDR R0, [R0, #60]");
+
 #define SALVA_STATO asm("POP {R7}");\
 		asm("POP {LR}");\
 		asm("LDR R1, =running");\
@@ -28,6 +32,12 @@
 		asm("STR R10, [R1, #40]");\
 		asm("STR R11, [R1, #44]");\
 		asm("STR SP, [R1, #52]");\
+		asm("LDR R0, [SP, 20]");\
+		asm("STR R0, [R1, 56]");\
+		asm("LDR R0, [SP, 24]");\
+		asm("STR R0, [R1, 60]");\
+		asm("LDR R0, [SP, 28]");\
+		asm("STR R0, [R1, 64]");\
 		//asm("STR LR, [R1, #60]");
 
 #define CARICA_STATO	asm("LDR R0, =running");\
@@ -43,7 +53,7 @@
 		asm("LDR R11, [R0, #44]");\
 		asm("LDR R12, [R0, #48]");\
 		asm("LDR SP, [R0, #52]");\
-		asm("LDR LR, [R0, #60]"); //ATTENTI ATTENTI ATTENTI AL LUPO AL LUPO
+		asm("LDR LR, [R0, #56]");\
 
 typedef struct context_type_t{
 	uint32_t R0;
@@ -61,7 +71,7 @@ typedef struct context_type_t{
 	uint32_t R12;
 	uint32_t R13;	//SP
 	uint32_t R14;	//LR
-	uint32_t R15;	//PC
+	uint32_t R15;	//PC  +60
 	uint32_t R16;
 } context_type;
 
