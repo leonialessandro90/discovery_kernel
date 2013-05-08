@@ -28,9 +28,9 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 	ADDR * sp_new_task;			// stack pointer of the new task
 	des_task_block * des_task;	// new task's descriptor
 
-	des_task = (des_task_block *) malloc(sizeof(des_task_block));
+	des_task = (des_task_block *) mem_alloc(sizeof(des_task_block));
 
-	des_task->top_stack = (STACK) malloc(DIM_SINGLE_STACK);
+	des_task->top_stack = (STACK) mem_alloc(DIM_SINGLE_STACK);
 
 	sp_new_task = (ADDR *) (des_task->top_stack + DIM_SINGLE_STACK / 2); //DA TESTARE!!!
 

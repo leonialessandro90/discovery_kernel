@@ -3,8 +3,8 @@
 
 #include "stm32f4xx.h"
 
-#define DYNAMIC_MEMORY_BLOCK_NUM 100
-#define DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE 100
+#define DYNAMIC_MEMORY_BLOCK_NUM 30
+#define DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE 200
 
 /*
 
@@ -35,7 +35,7 @@ typedef enum mem_block_status_t {
 
 typedef struct mem_block_t {
 	mem_block_status status;
-	uint8_t content[DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE];
+	uint32_t content[DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE/4];
 } mem_block;
 
 mem_block mem_main_memory[DYNAMIC_MEMORY_BLOCK_NUM];
