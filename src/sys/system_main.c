@@ -83,6 +83,7 @@ void activate_dummy()
 
 int main()
 {
+	mem_init();
 	sys_init();
 	user_main();
 	init_timer();

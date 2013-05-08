@@ -5,10 +5,10 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <malloc.h>
 
 #include "types.h"
 
+#include "memory.h"
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
 #include "leds.h"

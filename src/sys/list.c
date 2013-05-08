@@ -26,16 +26,15 @@ void * list_remove_tail(list ** lst)
 	if(*lst == null)
 		return null;
 
-
 	if((*lst)->next == null) {
-		free(*lst);
+		mem_free(*lst);
 		*lst = null;
 		return null;
 	}
 
 	while(iterator->next->next != null)
 		iterator = iterator->next;
-	free(iterator->next);
+	mem_free(iterator->next);
 	iterator->next = null;
 	return iterator;
 }
@@ -45,7 +44,7 @@ void list_insert(list ** lst, void * elem)
 	list * new_block;
 	list * iterator = *lst;
 
-	new_block = malloc(sizeof(list));
+	new_block = mem_alloc(sizeof(list));
 	new_block->elem = elem;
 	new_block->next = null;
 	if (*lst == null) {

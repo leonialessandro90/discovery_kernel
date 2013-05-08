@@ -1,8 +1,8 @@
 #ifndef LIST_H_
 #define LIST_H_
 
-#include <malloc.h>
 #include "types.h"
+#include "memory.h"
 
 typedef struct list_t {
 	void * elem;
