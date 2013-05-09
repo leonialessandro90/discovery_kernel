@@ -57,6 +57,12 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 	list_insert(&ready, (void *)des_task);
 }
 
+void wait(uint32_t numberOfCycles)
+{
+	while (numberOfCycles != 0)
+		numberOfCycles--;
+}
+
 inline des_task_block * RR_scheduler()
 {
 	register des_task_block * next = (des_task_block *)list_round_shift(&ready);

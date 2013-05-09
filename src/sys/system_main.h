@@ -18,6 +18,18 @@
 		asm("ADD SP, SP, #32");\
 		asm("LDR R0, [R0, #60]");
 
+#define FUN_TO_INT\
+		asm("PUSH {XPRS}");\
+		asm("PUSH {PC}");\
+		asm("LDR LR, [R0, #60]");\
+		asm("PUSH {LR}");\
+		asm("PUSH {R12}");\
+		asm("PUSH {R3}");\
+		asm("PUSH {R2}");\
+		asm("PUSH {R1}");\
+		asm("PUSH {R0}");\
+		asm("MOV LR, 0xFFFFFFF9");
+
 #define SALVA_STATO\
 		asm("POP {R7}");\
 		asm("POP {LR}");\
@@ -39,7 +51,7 @@
 		asm("STR R0, [R1, 60]");\
 		asm("LDR R0, [SP, 28]");\
 		asm("STR R0, [R1, 64]");
-		//asm("STR LR, [R1, #60]");
+//asm("STR LR, [R1, #60]");
 
 #define CARICA_STATO\
 		asm("LDR R0, =running");\
@@ -93,5 +105,6 @@ void start_task(ADDR addr_fun, uint32_t param);
 void init_timer();
 void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param);
 inline des_task_block * SCHEDULER ();
+void wait(uint32_t numberOfCycles);
 
 #endif /* SYSTEM_MAIN_H_ */

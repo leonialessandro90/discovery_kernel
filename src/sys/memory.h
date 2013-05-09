@@ -2,9 +2,7 @@
 #define MEMORY_H_
 
 #include "stm32f4xx.h"
-
-#define DYNAMIC_MEMORY_BLOCK_NUM 30
-#define DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE 200
+#include "types.h"
 
 /*
 
