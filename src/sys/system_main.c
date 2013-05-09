@@ -32,7 +32,7 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 
 	des_task->top_stack = (STACK) mem_alloc(DIM_SINGLE_STACK);
 
-	sp_new_task = (ADDR *) (des_task->top_stack + DIM_SINGLE_STACK / 2); //DA TESTARE!!!
+	sp_new_task = (ADDR *) (des_task->top_stack + DIM_SINGLE_STACK - 32); //DA TESTARE!!!
 
 	des_task->id = id++;
 	des_task->priority = priority;
