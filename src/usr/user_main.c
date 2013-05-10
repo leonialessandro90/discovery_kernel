@@ -88,7 +88,7 @@ TASK task4(int k)
 
 void user_main()
 {
-	sem_init(&sem_led, 0);
+	//sem_init(&sem_led, 0);
 	activate_task(&task1, 1, 2);
 	//activate_task(&task4, 4, 10);
 }

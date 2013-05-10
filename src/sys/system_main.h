@@ -18,17 +18,23 @@
 		asm("ADD SP, SP, #32");\
 		asm("LDR R0, [R0, #60]");
 
+
 #define FUN_TO_INT\
-		asm("PUSH {XPRS}");\
-		asm("PUSH {PC}");\
-		asm("LDR LR, [R0, #60]");\
+		asm("PUSH {R0}");\
+		asm("PUSH {R0}");\
+		asm("LDR LR, [R0, #56]");\
 		asm("PUSH {LR}");\
 		asm("PUSH {R12}");\
 		asm("PUSH {R3}");\
 		asm("PUSH {R2}");\
 		asm("PUSH {R1}");\
 		asm("PUSH {R0}");\
-		asm("MOV LR, 0xFFFFFFF9");
+		asm("MOV LR, 0xFFFFFFF9");\
+		asm("LDR R1, [R0, #60]");\
+		asm("STR R1, [SP, #28]");\
+		asm("LDR R1, [R0, #64]");\
+		asm("STR R1, [SP, #32]");
+
 
 #define SALVA_STATO\
 		asm("POP {R7}");\
@@ -89,12 +95,17 @@ typedef struct context_type_t {
 	uint32_t R16;
 } context_type;
 
+typedef enum swapped_out_from_t{
+	FUNCTION,
+	INTERRUPT
+}swapped_out_from;
+
 typedef struct des_task_type_t{
 	uint8_t id;
 	uint8_t priority;
 	STACK top_stack;
 	context_type context;
-	TASK * next_task;
+	swapped_out_from swapped_from;
 } des_task_block;
 
 des_task_block * running; // currently running task

@@ -1,5 +1,5 @@
 #include "sem.h"
-
+/*
 void sem_insert_queue(des_task_block* src)
 {
 	des_task_block* p = src;
@@ -72,3 +72,4 @@ void sem_signal(sem* s)
 	asm("CPSIE I");
 	asm("bx lr");
 }
+*/

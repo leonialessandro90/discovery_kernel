@@ -13,8 +13,11 @@ void SysTick_Handler(void)
 		count = 0;
 
 		SALVA_STATO
+		running->swapped_from = INTERRUPT;
 		running = SCHEDULER();
 		CARICA_STATO
+		if( running->swapped_from == FUNCTION ){
+			FUN_TO_INT}
 
 		asm("MOV LR, 0xFFFFFFF9");
 		asm("CPSIE I");

@@ -12,7 +12,8 @@ inline void terminate_task()
 	free(zombie);
 	running = SCHEDULER();
 	CARICA_STATO
-	INT_TO_FUN
+	if( running->swapped_from == INTERRUPT)
+		INT_TO_FUN
 	asm("CPSIE I");
 	asm("add r0, r0, #1");
 	asm("bx r0");
@@ -36,12 +37,26 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 
 	des_task->id = id++;
 	des_task->priority = priority;
+	des_task->swapped_from = INTERRUPT;
 
 	des_task->context.R0 = param;
+	des_task->context.R1 = 0;
+	des_task->context.R2 = 0;
+	des_task->context.R3 = 0;
+	des_task->context.R4 = 0;
+	des_task->context.R5 = 0;
+	des_task->context.R6 = 0;
+	des_task->context.R7 = 0;
+	des_task->context.R8 = 0;
+	des_task->context.R9 = 0;
+	des_task->context.R10 = 0;
+	des_task->context.R11 = 0;
+	des_task->context.R12 = 0;
+
 	des_task->context.SP = (REG) sp_new_task;
-	des_task->context.XPSR = 0x1000000;
 	des_task->context.LR = (uint32_t) &terminate_task;
 	des_task->context.PC = (uint32_t) addr_fun;
+	des_task->context.XPSR = 0x1000000;
 
 	*(sp_new_task) = (REG) des_task->context.R0;
 	*(sp_new_task + 1) = (REG) des_task->context.R1;
