@@ -11,17 +11,13 @@ inline void terminate_task()
 	free(((des_task_block *)(zombie->elem))->top_stack);
 	free(zombie);
 	running = SCHEDULER();
-	CARICA_STATO
+	LOAD_STATE
 	if( running->swapped_from == INTERRUPT){
 		INT_TO_FUN
 	}
 	asm("CPSIE I");
 	asm("add r0, r0, #1");
 	asm("bx r0");
-	/*asm("POP {R7}");
-	asm("POP {R1}");
-	asm("PUSH {LR}");
-	asm("PUSH {R7}");*/
 }
 
 void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
@@ -98,7 +94,7 @@ void sys_init()
 
 void activate_dummy()
 {
-	CARICA_STATO
+	LOAD_STATE
 	INT_TO_FUN
 	asm("bx r0");
 }

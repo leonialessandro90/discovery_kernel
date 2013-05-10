@@ -36,7 +36,7 @@
 		asm("STR R1, [SP, #32]");
 
 
-#define SALVA_STATO\
+#define SAVE_STATE_FROM_INT\
 		asm("POP {R7}");\
 		asm("POP {LR}");\
 		asm("LDR R1, =running");\
@@ -57,9 +57,29 @@
 		asm("STR R0, [R1, 60]");\
 		asm("LDR R0, [SP, 28]");\
 		asm("STR R0, [R1, 64]");
-//asm("STR LR, [R1, #60]");
 
-#define CARICA_STATO\
+//i don't need to store the value of LR because of it is saved
+//in the stack of the function that called this macro
+#define SAVE_STATE_FROM_FUN\
+		asm("POP {R7}");\
+		asm("POP {LR}");\
+		asm("LDR R1, =running");\
+		asm("LDR R1, [R1, 0]");\
+		asm("ADD R1, R1, #8");\
+		asm("STR R4, [R1, #16]");\
+		asm("STR R5, [R1, #20]");\
+		asm("STR R6, [R1, #24]");\
+		asm("STR R7, [R1, #28]");\
+		asm("STR R8, [R1, #32]");\
+		asm("STR R9, [R1, #36]");\
+		asm("STR R10, [R1, #40]");\
+		asm("STR R11, [R1, #44]");\
+		asm("STR SP, [R1, #52]");\
+		asm("STR LR, [R1, #60]");\
+		asm("MRS XPRS, R0");\
+		asm("STR R0, [R1, #64]");
+
+#define LOAD_STATE\
 		asm("LDR R0, =running");\
 		asm("LDR R0, [R0,0]");\
 		asm("ADD R0, R0, #8");\

@@ -12,10 +12,10 @@ void SysTick_Handler(void)
 	if (count==100) {
 		count = 0;
 
-		SALVA_STATO
+		SAVE_STATE_FROM_INT
 		running->swapped_from = INTERRUPT;
 		running = SCHEDULER();
-		CARICA_STATO
+		LOAD_STATE
 		if( running->swapped_from == FUNCTION ){
 			FUN_TO_INT
 		}
