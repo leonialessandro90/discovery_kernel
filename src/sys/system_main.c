@@ -12,8 +12,8 @@ inline void terminate_task()
 	free(zombie);
 	running = SCHEDULER();
 	CARICA_STATO
-	if( running->swapped_from == INTERRUPT)
-		INT_TO_FUN
+	if( running->swapped_from == INTERRUPT){
+		INT_TO_FUN}
 	asm("CPSIE I");
 	asm("add r0, r0, #1");
 	asm("bx r0");
