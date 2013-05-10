@@ -13,7 +13,8 @@ inline void terminate_task()
 	running = SCHEDULER();
 	CARICA_STATO
 	if( running->swapped_from == INTERRUPT){
-		INT_TO_FUN}
+		INT_TO_FUN
+	}
 	asm("CPSIE I");
 	asm("add r0, r0, #1");
 	asm("bx r0");
