@@ -37,6 +37,7 @@ typedef struct mem_block_t {
 } mem_block;
 
 mem_block mem_main_memory[DYNAMIC_MEMORY_BLOCK_NUM];
+uint32_t mem_free_blocks;
 
 void mem_init();
 void * mem_alloc(uint32_t size);
