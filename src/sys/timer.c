@@ -1,4 +1,3 @@
-
 #include "system_main.h"
 
 uint16_t count = 0;
@@ -8,29 +7,24 @@ void SysTick_Handler(void)
 {
 	asm("CPSID I");
 	count++;
-
 	if (count==100) {
 		count = 0;
-
 		SAVE_STATE_FROM_INT
 		running->swapped_from = INTERRUPT;
 		running = SCHEDULER();
 		LOAD_STATE
-		if( running->swapped_from == FUNCTION ){
+		if (running->swapped_from == FUNCTION) {
 			FUN_TO_INT
 		}
-
 		asm("MOV LR, 0xFFFFFFF9");
 		asm("CPSIE I");
-		asm("bx lr");
+		asm("BX LR");
 	}
-
 	asm("CPSIE I");
-
 }
 
-void init_timer(){
-
+void init_timer()
+{
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 
 	EXTI_InitTypeDef   EXTI_InitStructure;

@@ -3,9 +3,6 @@
 
 #define SCHEDULER RR_scheduler
 
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "types.h"
 
 #include "memory.h"
@@ -17,7 +14,6 @@
 #define INT_TO_FUN\
 		asm("ADD SP, SP, #32");\
 		asm("LDR R0, [R0, #60]");
-
 
 #define FUN_TO_INT\
 		asm("PUSH {R0}");\
@@ -34,7 +30,6 @@
 		asm("STR R1, [SP, #28]");\
 		asm("LDR R1, [R0, #64]");\
 		asm("STR R1, [SP, #32]");
-
 
 #define SAVE_STATE_FROM_INT\
 		asm("POP {R7}");\
@@ -115,12 +110,12 @@ typedef struct context_type_t {
 	uint32_t R16;
 } context_type;
 
-typedef enum swapped_out_from_t{
+typedef enum swapped_out_from_t {
 	FUNCTION,
 	INTERRUPT
-}swapped_out_from;
+} swapped_out_from;
 
-typedef struct des_task_type_t{
+typedef struct des_task_type_t {
 	uint8_t id;
 	uint8_t priority;
 	STACK top_stack;

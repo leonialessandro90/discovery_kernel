@@ -3,9 +3,8 @@
 void mem_init()
 {
 	register int i;
-	for (i=0; i<DYNAMIC_MEMORY_BLOCK_NUM; i++) {
+	for (i=0; i<DYNAMIC_MEMORY_BLOCK_NUM; i++)
 		mem_main_memory[i].status = FREE;
-	}
 }
 
 void * mem_alloc(uint32_t size)
@@ -13,7 +12,7 @@ void * mem_alloc(uint32_t size)
 	register int i;
 	if (size>DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE)
 		return 0;
-	while (mem_main_memory[i].status != FREE) i++;
+	for (i=0; mem_main_memory[i].status != FREE; i++) ;
 	mem_main_memory[i].status = NOT_FREE;
 	return &(mem_main_memory[i].content);
 }

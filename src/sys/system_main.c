@@ -8,16 +8,16 @@ inline void terminate_task()
 	asm("CPSID I");
 	num_active_task--;
 	zombie = list_remove(&ready);
-	free(((des_task_block *)(zombie->elem))->top_stack);
-	free(zombie);
+	mem_free(((des_task_block *)(zombie->elem))->top_stack);
+	mem_free(zombie);
 	running = SCHEDULER();
 	LOAD_STATE
 	if( running->swapped_from == INTERRUPT){
 		INT_TO_FUN
 	}
 	asm("CPSIE I");
-	asm("add r0, r0, #1");
-	asm("bx r0");
+	asm("ADD R0, R0, #1");
+	asm("BX R0");
 }
 
 void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
@@ -65,7 +65,6 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 	*(sp_new_task + 7) = (REG) des_task->context.XPSR;
 
 	num_active_task++;
-
 	list_insert(&ready, (void *)des_task);
 }
 
@@ -87,6 +86,7 @@ TASK dummy(int p) { for (;;) ; }
 
 void sys_init()
 {
+	mem_init();
 	activate_task(&dummy, 10, 50);
 	running = SCHEDULER();
 	led_init();
@@ -96,12 +96,11 @@ void activate_dummy()
 {
 	LOAD_STATE
 	INT_TO_FUN
-	asm("bx r0");
+	asm("BX R0");
 }
 
 int main()
 {
-	mem_init();
 	sys_init();
 	user_main();
 	init_timer();
