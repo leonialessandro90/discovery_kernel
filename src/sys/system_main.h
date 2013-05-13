@@ -12,13 +12,12 @@
 #include "list.h"
 
 #define INT_TO_FUN\
-		asm("ADD SP, SP, #32");\
-		asm("LDR R0, [R0, #60]");
+		asm("ADD SP, SP, #32");
 
 #define FUN_TO_INT\
 		asm("PUSH {R0}");\
 		asm("PUSH {R0}");\
-		asm("LDR LR, [R0, #56]");\
+		asm("LDR LR, [R1, #56]");\
 		asm("PUSH {LR}");\
 		asm("PUSH {R12}");\
 		asm("PUSH {R3}");\
@@ -26,10 +25,10 @@
 		asm("PUSH {R1}");\
 		asm("PUSH {R0}");\
 		asm("MOV LR, 0xFFFFFFF9");\
-		asm("LDR R1, [R0, #60]");\
-		asm("STR R1, [SP, #28]");\
-		asm("LDR R1, [R0, #64]");\
-		asm("STR R1, [SP, #32]");
+		asm("LDR R0, [R1, #60]");\
+		asm("STR R0, [SP, #28]");\
+		asm("LDR R0, [R1, #64]");\
+		asm("STR R0, [SP, #32]");
 
 #define SAVE_STATE_FROM_INT\
 		asm("POP {R7}");\
@@ -71,24 +70,27 @@
 		asm("STR R11, [R1, #44]");\
 		asm("STR SP, [R1, #52]");\
 		asm("STR LR, [R1, #60]");\
-		asm("MRS XPRS, R0");\
+		asm("MRS R0, XPSR");\
 		asm("STR R0, [R1, #64]");
 
 #define LOAD_STATE\
-		asm("LDR R0, =running");\
-		asm("LDR R0, [R0,0]");\
-		asm("ADD R0, R0, #8");\
-		asm("LDR R4, [R0, #16]");\
-		asm("LDR R5, [R0, #20]");\
-		asm("LDR R6, [R0, #24]");\
-		asm("LDR R7, [R0, #28]");\
-		asm("LDR R8, [R0, #32]");\
-		asm("LDR R9, [R0, #36]");\
-		asm("LDR R10, [R0, #40]");\
-		asm("LDR R11, [R0, #44]");\
-		asm("LDR R12, [R0, #48]");\
-		asm("LDR SP, [R0, #52]");\
-		asm("LDR LR, [R0, #56]");
+		asm("LDR R1, =running");\
+		asm("LDR R1, [R1,0]");\
+		asm("ADD R1, R1, #8");\
+		asm("LDR R4, [R1, #16]");\
+		asm("LDR R5, [R1, #20]");\
+		asm("LDR R6, [R1, #24]");\
+		asm("LDR R7, [R1, #28]");\
+		asm("LDR R8, [R1, #32]");\
+		asm("LDR R9, [R1, #36]");\
+		asm("LDR R10, [R1, #40]");\
+		asm("LDR R11, [R1, #44]");\
+		asm("LDR R12, [R1, #48]");\
+		asm("LDR SP, [R1, #52]");\
+		asm("LDR LR, [R1, #56]");\
+		asm("LDR R0, [R1, #64]");\
+		asm("MSR APSR, R0");\
+		asm("LDR R0, [R1, #60]");
 
 typedef struct context_type_t {
 	uint32_t R0;
@@ -120,6 +122,7 @@ typedef struct des_task_type_t {
 	uint8_t priority;
 	STACK top_stack;
 	context_type context;
+	TASK* next_task;
 	swapped_out_from swapped_from;
 } des_task_block;
 

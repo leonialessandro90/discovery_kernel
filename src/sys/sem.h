@@ -8,7 +8,7 @@ typedef struct sem_type_t{
 	des_task_block* queue;
 } sem;
 
-void sem_init(sem* s, uint8_t param);
+void sem_init(sem* s, int8_t param);
 void sem_wait(sem* s);
 void sem_signal(sem* s);
 
