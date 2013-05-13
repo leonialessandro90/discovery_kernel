@@ -17,7 +17,7 @@ des_task_block* sem_remove_queue(sem * s)
 {
 	des_task_block* p = s->queue;
 	if (s->queue == null)
-		return NULL;
+		return null;
 	s->queue = s->queue->next_task;
 	return p;
 }
