@@ -16,7 +16,7 @@ inline void terminate_task()
 		INT_TO_FUN
 	}
 	asm("CPSIE I");
-	asm("ADD R0, R0, #1");
+	asm("ORR R0, R0, #0x1");
 	asm("BX R0");
 }
 

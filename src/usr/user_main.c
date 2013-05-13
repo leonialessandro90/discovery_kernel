@@ -11,6 +11,11 @@ TASK task2(int a);
 TASK task3(int a);
 TASK task4(int a);
 
+TASK task0(int b)
+{
+	led_on(LED0);
+}
+
 TASK task1(int b)
 {
 	int a=50;
@@ -57,7 +62,10 @@ TASK task4(int k)
 
 void user_main()
 {
+	activate_task(&task0, 1, 1);
 	activate_task(&task1, 1, 1);
 	activate_task(&task2, 1, 2);
+	activate_task(&task3, 1, 1);
+	activate_task(&task4, 1, 2);
 }
 
