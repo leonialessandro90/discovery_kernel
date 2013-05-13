@@ -201,7 +201,7 @@ static void SetSysClock(void);
   * @param  None
   * @retval None
   */
-void SystemInit(void)
+void SystemInit_(void)
 {
   /* FPU settings ------------------------------------------------------------*/
   #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
