@@ -1,8 +1,9 @@
 #include "sem.h"
 
+/*
 void sem_insert_queue(sem * s)
 {
-	des_task_block* p = s->queue;
+	list * p = s->queue;
 	if(s->queue == null){
 		s->queue = running;
 	}else {
@@ -15,13 +16,13 @@ void sem_insert_queue(sem * s)
 
 des_task_block* sem_remove_queue(sem * s)
 {
-	des_task_block* p = s->queue;
+	list* p = s->queue;
 	if (s->queue == null)
 		return null;
 	s->queue = s->queue->next_task;
 	return p;
 }
-
+*/
 
 void sem_init(sem* s, int8_t param)
 {
@@ -32,7 +33,6 @@ void sem_init(sem* s, int8_t param)
 void sem_wait(sem* s)
 {
 	asm("CPSID I");
-	//asm("PUSH {LR}");
 
 	s->value--;
 	if (s->value >= 0)
@@ -40,9 +40,8 @@ void sem_wait(sem* s)
 		asm("CPSIE I");
 		return;
 	}
-
-	sem_insert_queue(s);
-
+	//sem_insert_queue(s);
+	list_insert(&(s->queue), (void*) running);
 	SAVE_STATE_FROM_FUN
 	running->swapped_from = FUNCTION;
 	running = SCHEDULER();
@@ -57,8 +56,8 @@ void sem_wait(sem* s)
 
 void sem_signal(sem* s)
 {
+	list* resumed;
 	asm("CPSID I");
-	asm("PUSH {LR}");
 
 	s->value++;
 	if (s->value > 0)
@@ -66,15 +65,8 @@ void sem_signal(sem* s)
 		asm("CPSIE I");
 		return;
 	}
-/*
-	sem_insert_queue(s);
-
-	SAVE_STATE_FROM_FUN
-	running->swapped_from = FUNCTION;
-	running = SCHEDULER();
-	LOAD_STATE
+	resumed = list_remove(&s->queue);
+	list_insert(&ready, resumed);
 	asm("CPSIE I");
-	asm("BX R0");
-*/
 }
 

@@ -8,7 +8,7 @@
 
 typedef struct sem_type_t{
 	int8_t value;
-	des_task_block* queue;
+	list* queue;
 } sem;
 
 void sem_init(sem* s, int8_t param);
