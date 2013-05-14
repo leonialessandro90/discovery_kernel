@@ -15,15 +15,9 @@
 		asm("ADD SP, SP, #32");
 
 #define FUN_TO_INT\
-		asm("PUSH {R0}");\
-		asm("PUSH {R0}");\
+		asm("SUB SP, SP, #8");\
 		asm("LDR LR, [R1, #56]");\
-		asm("PUSH {LR}");\
-		asm("PUSH {R12}");\
-		asm("PUSH {R3}");\
-		asm("PUSH {R2}");\
-		asm("PUSH {R1}");\
-		asm("PUSH {R0}");\
+		asm("PUSH {LR,R12,R3,R2,R1,R0}");\
 		asm("MOV LR, 0xFFFFFFF9");\
 		asm("LDR R0, [R1, #60]");\
 		asm("STR R0, [SP, #28]");\
@@ -32,10 +26,9 @@
 
 #define SAVE_STATE_FROM_INT\
 		asm("POP {R7}");\
-		asm("POP {LR}");\
+		asm("ADD SP, SP, #4");\
 		asm("LDR R1, =running");\
 		asm("LDR R1, [R1, 0]");\
-		asm("ADD R1, R1, #8");\
 		asm("STR R4, [R1, #16]");\
 		asm("STR R5, [R1, #20]");\
 		asm("STR R6, [R1, #24]");\
@@ -45,12 +38,24 @@
 		asm("STR R10, [R1, #40]");\
 		asm("STR R11, [R1, #44]");\
 		asm("STR SP, [R1, #52]");\
-		asm("LDR R0, [SP, 20]");\
-		asm("STR R0, [R1, 56]");\
-		asm("LDR R0, [SP, 24]");\
-		asm("STR R0, [R1, 60]");\
-		asm("LDR R0, [SP, 28]");\
-		asm("STR R0, [R1, 64]");
+		\
+		asm("LDR R0, [SP, #0]");\
+		asm("STR R0, [R1, #0]");\
+		asm("LDR R0, [SP, #4]");\
+		asm("STR R0, [R1, #4]");\
+		asm("LDR R0, [SP, #8]");\
+		asm("STR R0, [R1, #8]");\
+		asm("LDR R0, [SP, #12]");\
+		asm("STR R0, [R1, #12]");\
+		asm("LDR R0, [SP, #16]");\
+		asm("STR R0, [R1, #48]");\
+		\
+		asm("LDR R0, [SP, #20]");\
+		asm("STR R0, [R1, #56]");\
+		asm("LDR R0, [SP, #24]");\
+		asm("STR R0, [R1, #60]");\
+		asm("LDR R0, [SP, #28]");\
+		asm("STR R0, [R1, #64]");
 
 //i don't need to store the value of LR because of it is saved
 //in the stack of the function that called this macro
@@ -59,7 +64,6 @@
 		asm("POP {LR}");\
 		asm("LDR R1, =running");\
 		asm("LDR R1, [R1, 0]");\
-		asm("ADD R1, R1, #8");\
 		asm("STR R4, [R1, #16]");\
 		asm("STR R5, [R1, #20]");\
 		asm("STR R6, [R1, #24]");\
@@ -76,7 +80,6 @@
 #define LOAD_STATE\
 		asm("LDR R1, =running");\
 		asm("LDR R1, [R1,0]");\
-		asm("ADD R1, R1, #8");\
 		asm("LDR R4, [R1, #16]");\
 		asm("LDR R5, [R1, #20]");\
 		asm("LDR R6, [R1, #24]");\
@@ -118,10 +121,10 @@ typedef enum swapped_out_from_t {
 } swapped_out_from;
 
 typedef struct des_task_type_t {
+	context_type context;
 	uint8_t id;
 	uint8_t priority;
 	STACK top_stack;
-	context_type context;
 	TASK* next_task;
 	swapped_out_from swapped_from;
 } des_task_block;
