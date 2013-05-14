@@ -16,8 +16,8 @@ inline void terminate_task()
 		INT_TO_FUN
 	}
 	asm("CPSIE I");
-	asm("ORR R0, R0, #0x1");
-	asm("BX R0");
+
+	asm("POP {PC}");
 }
 
 void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
@@ -117,7 +117,7 @@ void activate_dummy()
 {
 	LOAD_STATE
 	INT_TO_FUN
-	asm("BX R0");
+	asm("POP {PC}");
 }
 
 int main()

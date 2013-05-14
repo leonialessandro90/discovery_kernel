@@ -16,6 +16,7 @@ void SysTick_Handler(void)
 		if (running->swapped_from == FUNCTION) {
 			FUN_TO_INT
 		}
+		asm("POP {R0}");
 		asm("MOV LR, 0xFFFFFFF9");
 		asm("CPSIE I");
 		asm("BX LR");

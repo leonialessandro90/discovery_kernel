@@ -12,8 +12,10 @@
 #include "list.h"
 
 #define INT_TO_FUN\
+		asm("POP {R0}");\
+		asm("STR R0, [SP, #28]");\
 		asm("POP {R0-R3}");\
-		asm("ADD SP, SP, #16");
+		asm("ADD SP, SP, #12");
 
 
 #define FUN_TO_INT\
@@ -97,6 +99,7 @@
 		asm("LDR R0, [R1, #64]");\
 		asm("MSR APSR, R0");\
 		asm("LDR R0, [R1, #60]");\
+		asm("ORR R0, R0, #0x1");\
 		asm("PUSH {R0}");
 
 typedef struct context_type_t {
