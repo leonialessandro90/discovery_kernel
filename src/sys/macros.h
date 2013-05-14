@@ -10,7 +10,6 @@
 
 #define FUN_TO_INT\
 		asm("SUB SP, SP, #4");\
-		asm("LDR LR, [R1, #56]");\
 		asm("PUSH {LR,R12,R3,R2,R1,R0}");\
 		asm("MOV LR, 0xFFFFFFF9");\
 		asm("LDR R0, [R1, #60]");\
