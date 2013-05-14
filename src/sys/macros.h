@@ -6,7 +6,7 @@
 
 
 #define FUN_TO_INT\
-		asm("SUB SP, SP, #8");\
+		asm("SUB SP, SP, #4");\
 		asm("LDR LR, [R1, #56]");\
 		asm("PUSH {LR,R12,R3,R2,R1,R0}");\
 		asm("MOV LR, 0xFFFFFFF9");\
@@ -84,8 +84,7 @@
 		asm("LDR SP, [R1, #52]");\
 		asm("LDR LR, [R1, #56]");\
 		asm("LDR R0, [R1, #64]");\
-		asm("MSR APSR, R0");\
+		asm("MSR APSR_nzcvq, R0");\
 		asm("LDR R0, [R1, #60]");\
 		asm("ORR R0, R0, #0x1");\
 		asm("PUSH {R0}");
-
