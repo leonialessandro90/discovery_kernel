@@ -3,6 +3,9 @@
 
 #include "system_main.h"
 
+#include "macros.h"
+#include "task.h"
+
 typedef struct sem_type_t{
 	int8_t value;
 	des_task_block* queue;

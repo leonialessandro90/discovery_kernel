@@ -1,3 +1,6 @@
+#ifndef MACROS_H_
+#define MACROS_H_
+
 #define INT_TO_FUN\
 		asm("POP {R0}");\
 		asm("STR R0, [SP, #28]");\
@@ -88,3 +91,5 @@
 		asm("LDR R0, [R1, #60]");\
 		asm("ORR R0, R0, #0x1");\
 		asm("PUSH {R0}");
+
+#endif
