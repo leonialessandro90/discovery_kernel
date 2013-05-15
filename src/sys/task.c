@@ -2,19 +2,19 @@
 
 inline void terminate_task()
 {
-	register list * zombie;
+	register des_task_block * zombie;
 	asm("CPSID I");
 	num_active_task--;
-	zombie = list_remove(&ready);
-	mem_free(((des_task_block *)(zombie->elem))->top_stack);
+	zombie = running;
+	running = null;
+	mem_free(zombie->top_stack);
 	mem_free(zombie);
 	running = SCHEDULER();
 	LOAD_STATE
-	if( running->swapped_from == INTERRUPT){
+	if (running->swapped_from == INTERRUPT) {
 		INT_TO_FUN
 	}
 	asm("CPSIE I");
-
 	asm("POP {PC}");
 }
 
@@ -63,17 +63,21 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 	*(sp_new_task + 7) = (REG) des_task->context.XPSR;
 
 	num_active_task++;
-	list_insert(&ready, (void *)des_task);
+	list_insert_tail(&ready, (void *)des_task);
 }
 
 
 inline des_task_block * RR_scheduler()
 {
-	register des_task_block * next = (des_task_block *)list_round_shift(&ready);
-	if (num_active_task > 1 && !next->id)
-		return (des_task_block *)list_round_shift(&ready);
-	else
-		return next;
+	register des_task_block* next;
+	if (running)
+		list_insert_tail(&ready, running);
+	next = (des_task_block*) list_remove_head(&ready);
+	if(num_active_task > 1 && !next->id) {  //dummy has id=0
+		list_insert_tail(&ready, next);
+		next = (des_task_block*)list_remove_head(&ready);
+	}
+	return next;
 }
 
 void wait(uint32_t numberOfCycles)

@@ -20,7 +20,7 @@ TASK task1(int b)
 {
 	int a=50;
 	int i=0;
-	activate_task(&task3, 2, 3);
+//	activate_task(&task3, 2, 3);
 	for(i=0;i<1300000;i++){
 		if( (a == 50) && (b == 1) )
 			led_on(LED1);
@@ -32,7 +32,7 @@ TASK task2(int b)
 	int i=0;
 	int a = 5;
 
-	activate_task(&task4, 2, 4);
+	//activate_task(&task4, 2, 4);
 
 	for(i=0;i<500000;i++){
 		if( (a == 5) && (b == 2) )
@@ -62,7 +62,7 @@ TASK task4(int k)
 
 void user_main()
 {
-	activate_task(&task0, 1, 1);
+//	activate_task(&task0, 1, 1);
 	activate_task(&task1, 1, 1);
 	activate_task(&task2, 1, 2);
 	activate_task(&task3, 1, 1);

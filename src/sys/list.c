@@ -39,10 +39,10 @@ void * list_remove_tail(list ** lst)
 	return iterator;
 }
 
-void list_insert(list ** lst, void * elem)
+void list_insert_tail(list ** lst, void * elem)
 {
 	list * new_block;
-	list * iterator = *lst;
+	register list * iterator = *lst;
 
 	new_block = mem_alloc(sizeof(list));
 	new_block->elem = elem;
@@ -56,11 +56,14 @@ void list_insert(list ** lst, void * elem)
 	}
 }
 
-void * list_remove(list ** lst)
+void * list_remove_head(list ** lst)
 {
+	void * content;
 	list * head = *lst;
 	if (head == null)
 		return null;
+	content = head->elem;
 	*lst = (*lst)->next;
-	return head;
+	mem_free(head);
+	return content;
 }

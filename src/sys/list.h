@@ -9,8 +9,8 @@ typedef struct list_t {
 	struct list_t * next;
 } list;
 
-void list_insert(list ** lst, void * elem);
-void * list_remove(list ** lst);
+void list_insert_tail(list ** lst, void * elem);
+void * list_remove_head(list ** lst);
 void * list_round_shift(list ** lst);
 void * list_remove_tail(list ** lst);
 
