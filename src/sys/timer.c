@@ -15,8 +15,9 @@ void SysTick_Handler(void)
 		LOAD_STATE
 		if (running->swapped_from == FUNCTION) {
 			FUN_TO_INT
+		} else {
+			asm("POP {R0}");
 		}
-		asm("POP {R0}");
 		asm("MOV LR, 0xFFFFFFF9");
 		asm("CPSIE I");
 		asm("BX LR");

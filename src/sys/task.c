@@ -51,7 +51,7 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param)
 	des_task->context.SP = (REG) sp_new_task;
 	des_task->context.LR = (uint32_t) &terminate_task;
 	des_task->context.PC = (uint32_t) addr_fun;
-	des_task->context.XPSR = 0x1000000;
+	des_task->context.XPSR = 0x01000000;
 
 	*(sp_new_task) = (REG) des_task->context.R0;
 	*(sp_new_task + 1) = (REG) des_task->context.R1;

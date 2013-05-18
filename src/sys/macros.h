@@ -18,18 +18,19 @@
 	asm(/* Keep two locations free for store PC and XPSR directly from task descriptor (one location is already free)*/\
 		"SUB SP, SP, #4;"\
 		/* Store PC and XPSR in the interrupt stack */\
-		"LDR R0, [R1, #60];"\
-		"STR R0, [SP, #28];"\
-		"LDR R0, [R1, #64];"\
-		"STR R0, [SP, #32];"\
-		/* Push all registers needed to build up the interrupt stack */\
 		"PUSH {LR,R12,R3,R2,R1,R0};"\
+		"LDR R0, [R1, #60];"\
+		"STR R0, [SP, #24];"\
+		"LDR R0, [R1, #64];"\
+		"MOV R0, #16777216;"\
+		"STR R0, [SP, #28];");\
+		/* Push all registers needed to build up the interrupt stack */\
 		/* Store in LR a magic word to correctly return from interrupt */\
-		"MOV LR, 0xFFFFFFF9");
+		//("MOV LR, 0xFFFFFFF9");
 
 
 #define SAVE_STATE_FROM_INT\
-	asm(/* The interrupt function stored in the stack LR and R7	*/\
+	asm volatile(/* The interrupt function stored in the stack LR and R7	*/\
 		/* Get back R7 and discard LR that is meaningless		*/\
 		"POP {R7};"\
 		"ADD SP, SP, #4;"\
@@ -68,7 +69,7 @@
 
 
 #define SAVE_STATE_FROM_FUN\
-	asm(/* The function stored in the stack LR and R7, they are both meaningful */\
+	asm volatile(/* The function stored in the stack LR and R7, they are both meaningful */\
 		"POP {R7,LR};"\
 		/* Store R4-R12, SP, LR and XPSR in the task descriptor	*/\
 		/* Don't need to save R0-R3: inconsistency assumption	*/\
@@ -89,7 +90,7 @@
 		"STR R0, [R1, #64];");
 
 #define LOAD_STATE\
-	asm(/* Load R4-R12, SP, LR and APSR from the task descriptor 		*/\
+	asm volatile(/* Load R4-R12, SP, LR and APSR from the task descriptor 		*/\
 		/* R0-R3 are not loaded: don't know the situation of the stack	*/\
 		"LDR R1, =running;"\
 		"LDR R1, [R1,0];"\
