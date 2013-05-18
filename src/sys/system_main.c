@@ -44,6 +44,5 @@ int main()
 	user_main();
 	init_timer();
 	activate_dummy();
-
 	for(;;);
 }
