@@ -2,6 +2,21 @@
 
 TASK dummy(int p) { for (;;) ; }
 
+#ifdef _PERIODIC_TASK
+TASK server(int p) {
+	des_task_block* next;
+	while (num_ape_request!=0 && server_capacitance>0){
+		dec_capacitance=1;
+		next=(des_task_block *)list_remove_head(&ape_queue);
+		serve_ape_request(next);
+	}
+}
+
+void activate_server(){
+	activate_task(&server, 2, 0, 5);
+}
+#endif
+
 void SystemInit()
 {
 	RCC_DeInit();
@@ -26,8 +41,10 @@ void sys_init()
 {
 	mem_init();
 	num_active_task = 0;
-	activate_task(&dummy, 10, 50);
+	activate_task(&dummy, 10, 50, 255);
+#ifndef _PERIODIC_TASK
 	running = SCHEDULER();
+#endif
 	led_init();
 }
 
@@ -41,6 +58,9 @@ void activate_dummy()
 int main()
 {
 	sys_init();
+#ifdef _PERIODIC_TASK
+	activate_server();
+#endif
 	user_main();
 	init_timer();
 	activate_dummy();

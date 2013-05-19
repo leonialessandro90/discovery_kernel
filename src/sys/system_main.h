@@ -17,7 +17,6 @@
 void user_main();
 void start_task(ADDR addr_fun, uint32_t param);
 void init_timer();
-void activate_task(TASK* addr_fun, uint8_t priority, uint32_t param);
 inline des_task_block * SCHEDULER ();
 void wait(uint32_t numberOfCycles);
 
