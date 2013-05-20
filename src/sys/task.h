@@ -1,4 +1,4 @@
-#define _PERIODIC_TASK
+//#define _PERIODIC_TASK
 
 #ifndef TASK_H_
 #define TASK_H_
