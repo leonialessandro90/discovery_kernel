@@ -69,8 +69,10 @@ typedef struct mem_dbg_data_t {
 	mem_dbg mem_result;
 } mem_dbg_data;
 
-mem_dbg_data mem_dbg_array[260];
+#define MEM_DBG_ARRAY_SIZE 260
+mem_dbg_data mem_dbg_array[MEM_DBG_ARRAY_SIZE];
 uint16_t mem_dbg_array_pointer;
+uint16_t mem_dbg_valid;
 uint8_t mem_debug;
 
 void mem_dbg_init();

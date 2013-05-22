@@ -52,7 +52,7 @@ void mem_dbg_add(uint8_t task_id,
 		mem_block_status block_status,
 		mem_dbg mem_result)
 {
-	mem_dbg_array[mem_dbg_array_pointer].valid = 1;
+	mem_dbg_array[mem_dbg_array_pointer].valid = mem_dbg_valid;
 	mem_dbg_array[mem_dbg_array_pointer].task_id = task_id;
 	mem_dbg_array[mem_dbg_array_pointer].mem_operation = mem_operation;
 	mem_dbg_array[mem_dbg_array_pointer].address = address;
@@ -60,10 +60,15 @@ void mem_dbg_add(uint8_t task_id,
 	mem_dbg_array[mem_dbg_array_pointer].block_status = block_status;
 	mem_dbg_array[mem_dbg_array_pointer].mem_result = mem_result;
 	mem_dbg_array_pointer++;
+	if (mem_dbg_array_pointer == MEM_DBG_ARRAY_SIZE) {
+		mem_dbg_array_pointer = 0;
+		mem_dbg_valid++;
+	}
 }
 
 void mem_dbg_init()
 {
+	mem_dbg_valid = 1;
 	mem_debug = 0;
 	mem_dbg_array_pointer = 0;
 }
