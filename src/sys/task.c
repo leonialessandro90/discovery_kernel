@@ -34,7 +34,7 @@ void reactivate_periodic_task()
 	asm("CPSID I");
 
 	if (zombie->id==1){
-		server_capacitance=6;
+		server_capacitance=SERVER_CAPACITANCE;
 		dec_capacitance=0;
 	}
 	zombie->context.R0 = zombie->context_app.R0;
@@ -296,7 +296,7 @@ void activate_task(TASK * addr_fun, uint8_t priority, uint32_t param, uint8_t pe
 		list_insert_tail(&ready, (void *)des_task);
 	#else
 		if (des_task->id==1)
-				server_capacitance=6;
+				server_capacitance=SERVER_CAPACITANCE;
 			if (des_task->id==0){
 				periodic_list_insert(&dummy_list, (void *)des_task);
 				running = des_task;

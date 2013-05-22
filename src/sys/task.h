@@ -73,6 +73,9 @@ uint8_t dec_capacitance;
 uint8_t server_capacitance;
 
 #ifdef _PERIODIC_TASK
+
+#define SERVER_CAPACITANCE 2
+
 void RM_List_Management(void);
 void dynamic_task_activate(TASK * , uint8_t , uint32_t , uint8_t);
 void reactivate_periodic_task();

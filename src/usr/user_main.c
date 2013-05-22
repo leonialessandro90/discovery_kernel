@@ -1,8 +1,7 @@
 
-//#define SYSTEM_MAIN_H_
 
 #include "../sys/system_main.h"
-#include "../sys/sem.h"
+
 
 sem sem_led;
 

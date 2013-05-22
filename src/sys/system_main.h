@@ -2,6 +2,8 @@
 #define SYSTEM_MAIN_H_
 
 
+
+
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
 #include "macros.h"
@@ -12,6 +14,7 @@
 #include "leds.h"
 #include "list.h"
 #include "task.h"
+#include "sem.h"
 
 
 void user_main();

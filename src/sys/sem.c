@@ -1,4 +1,3 @@
-#define _SEM_PREEMPTIVE
 
 #include "sem.h"
 
