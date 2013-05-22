@@ -43,4 +43,42 @@ void mem_init();
 void * mem_alloc(uint32_t size);
 void mem_free(void * address);
 
+
+/**********************
+ *                    *
+ *  Debugging Stuff   *
+ *                    *
+ *********************/
+
+
+typedef enum mem_dbg_t {
+	MEM_OK = null,
+	MEM_ALLOCATION,
+	MEM_DEALLOCATION,
+	MEM_FULL,
+	MEM_ADDR_NOT_FOUND
+} mem_dbg;
+
+typedef struct mem_dbg_data_t {
+	uint8_t valid;
+	uint8_t task_id;
+	mem_dbg mem_operation;
+	void * address;
+	uint32_t block;
+	mem_block_status block_status;
+	mem_dbg mem_result;
+} mem_dbg_data;
+
+mem_dbg_data mem_dbg_array[260];
+uint16_t mem_dbg_array_pointer;
+uint8_t mem_debug;
+
+void mem_dbg_init();
+void mem_dbg_add(uint8_t task_id,
+		mem_dbg mem_operation,
+		void * address,
+		uint32_t block,
+		mem_block_status block_status,
+		mem_dbg mem_result);
+
 #endif /* MEMORY_H_ */
