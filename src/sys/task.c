@@ -316,7 +316,7 @@ inline des_task_block * RR_scheduler()
 	if (running)
 		list_insert_tail(&ready, running);
 	next = (des_task_block*) list_remove_head(&ready);
-	if(num_active_task > 1 && !next->id) {  //dummy has id=0
+	if(num_active_task > 1 && next->id == DUMMY) {
 		list_insert_tail(&ready, next);
 		next = (des_task_block*)list_remove_head(&ready);
 	}

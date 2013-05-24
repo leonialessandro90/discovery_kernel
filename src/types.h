@@ -11,7 +11,7 @@
 #define STACK void*
 #define ADDR uint32_t
 #define REG uint32_t
-
+#define DUMMY null
 
 #define MEMORY_BASE 0x2001fff0
 #define EBP_BASE 0x0
@@ -32,6 +32,7 @@
 #define BOOL uint8_t
 #define TRUE 1
 #define FALSE 0
+
 
 #define BP R7
 #define SP R13
