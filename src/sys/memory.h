@@ -31,12 +31,23 @@ typedef enum mem_block_status_t {
 	NOT_FREE
 } mem_block_status;
 
-typedef struct mem_block_t {
+typedef struct mem_block_properties_t {
 	mem_block_status status;
-	uint32_t content[DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE/4];
+	uint8_t num_allocated;
+} mem_block_properties;
+
+
+typedef struct mem_block_t {
+	uint8_t block[DYNAMIC_MEMORY_BLOCK_CONTENT_SIZE];
 } mem_block;
 
-mem_block mem_main_memory[DYNAMIC_MEMORY_BLOCK_NUM];
+
+mem_block mem_dynamic[DYNAMIC_MEMORY_BLOCK_NUM];
+mem_block_properties mem_status[DYNAMIC_MEMORY_BLOCK_NUM];
+
+
+
+
 uint32_t mem_free_blocks;
 
 void mem_init();
