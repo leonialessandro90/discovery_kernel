@@ -50,8 +50,10 @@ void sys_init()
 
 void activate_dummy()
 {
+	asm("CPSID I");
 	LOAD_STATE
 	INT_TO_FUN
+	asm("CPSIE I");
 	asm("POP {PC}");
 }
 
