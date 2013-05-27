@@ -21,11 +21,11 @@ TASK task1(int b)
 	int a=50;
 	int i=0;
 	for(i=0;i<1300000;i++){
-		if( (a == 50) && (b == 1) ) {
+		//if( (a == 50) && (b == 1) ) {
 			sem_wait(&sem_led);
 			led_on(LED1);
 			sem_signal(&sem_led);
-		}
+		//}
 	}
 }
 
@@ -34,11 +34,11 @@ TASK task2(int b)
 	int i=0;
 	int a = 5;
 	for(i=0;i<500000;i++){
-		if( (a == 5) && (b == 2) ){
+		//if( (a == 5) && (b == 2) ){
 			sem_wait(&sem_led);
 			led_on(LED2);
 			sem_signal(&sem_led);
-		}
+		//}
 	}
 }
 
@@ -47,11 +47,11 @@ TASK task3(int k)
 	int i=0;
 	int a = 1000000;
 	for(i=0;i<1000000;i++) {
-		if( (a == 1000000) && (k == 3) ){
+		//if( (a == 1000000) && (k == 3) ){
 			sem_wait(&sem_led);
 			led_on(LED3);
 			sem_signal(&sem_led);
-		}
+		//}
 	}
 }
 
@@ -60,11 +60,11 @@ TASK task4(int k)
 	int i=0;
 	int a = 10;
 	for(i=0;i<2000000;i++) {
-		if( (a == 10) && (k == 4) ){
+		//if( (a == 10) && (k == 4) ){
 			sem_wait(&sem_led);
 			led_on(LED0);
 			sem_signal(&sem_led);
-		}
+		//}
 	}
 }
 

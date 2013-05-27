@@ -60,7 +60,7 @@ typedef enum mem_dbg_t {
 } mem_dbg;
 
 typedef struct mem_dbg_data_t {
-	uint8_t valid;
+	uint32_t valid;
 	uint8_t task_id;
 	mem_dbg mem_operation;
 	void * address;
@@ -72,7 +72,7 @@ typedef struct mem_dbg_data_t {
 #define MEM_DBG_ARRAY_SIZE 260
 mem_dbg_data mem_dbg_array[MEM_DBG_ARRAY_SIZE];
 uint16_t mem_dbg_array_pointer;
-uint16_t mem_dbg_valid;
+uint32_t mem_dbg_valid;
 uint8_t mem_debug;
 
 void mem_dbg_init();

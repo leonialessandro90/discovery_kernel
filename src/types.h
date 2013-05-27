@@ -3,8 +3,8 @@
 
 // Types
 
-//#define _SEM_PREEMPTIVE
-#define _PERIODIC_TASK
+#define _SEM_PREEMPTIVE
+//#define _PERIODIC_TASK
 
 #define null 0
 

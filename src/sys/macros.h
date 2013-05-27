@@ -22,7 +22,7 @@
 		"LDR R0, [R1, #60];"\
 		"STR R0, [SP, #24];"\
 		"LDR R0, [R1, #64];"\
-		"MOV R0, #16777216;"\
+		"MOV R0, #0x1000000;"\
 		"STR R0, [SP, #28];");\
 		/* Push all registers needed to build up the interrupt stack */\
 		/* Store in LR a magic word to correctly return from interrupt */\
